@@ -2,6 +2,7 @@ use macroquad::prelude::*;
 
 use crate::entity::*;
 use crate::player::*;
+use crate::event::*;
 
 mod entity;
 mod event;
@@ -21,10 +22,17 @@ async fn main() {
         let mut entities = Vec::<Box<dyn Entity>>::new();
         let entities_ptr = &mut entities as Entities;
 
+        let mut events = Vec::<Event>::new();
+
         let player = Player::new(entities_ptr);
-        
+
         loop {
             clear_background(BLACK);
+
+            for entity in entities.iter_mut() {
+                entity.update(entities_ptr, &mut events);
+                entity.draw();
+            }
 
             next_frame().await;
         }
