@@ -32,7 +32,8 @@ pub fn load_map(path: &str) -> Vec<LevelHitbox> {
 
 #[repr(u16)]
 pub enum HitboxFlags {
-	PlayerCollides = 1,
+	PlayerCollides	= 1,
+	Step			= 1 << 1, // Player automatically steps up this terrain
 }
 
 pub struct LevelHitbox {

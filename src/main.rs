@@ -32,6 +32,7 @@ async fn main() {
         let mut animations = HashMap::<String, Animation>::new();
 
         assets.load_animation("fard").await;
+        assets.load_sounds("fart").await;
 
         let mut level = Level::load("level0").await;
 
@@ -59,7 +60,12 @@ async fn main() {
 
             i = 0;
             while i < entities.len() {
-                entities[i].update(&mut level, entities_ptr, &mut events);
+                let e_result = entities[i].update(&mut level, entities_ptr, &mut events, &assets);
+                if e_result & EntityState::Dead as u16 != 0 {
+                    entities.remove(i);
+                    continue;
+                }
+
                 entities[i].draw(&assets);
 
                 i += 1;
